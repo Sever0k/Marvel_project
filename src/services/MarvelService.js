@@ -23,7 +23,6 @@ class MarvelService {
     }
 
     _transformCharacter = (char) => {
-
         return {
             name: char.name,
             description: char.description ? `${char.description.slice(0, 210)}...` : 'Нету данных о этом персонаже',
@@ -33,7 +32,4 @@ class MarvelService {
         }
     }
 }
-
-
-
 export default MarvelService;
