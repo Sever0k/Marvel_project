@@ -7,10 +7,6 @@ import './randomChar.scss';
 import mjolnir from '../../resources/img/mjolnir.png';
 
 class RandomChar extends Component {
-    constructor(props){
-        super(props);
-        this.updateChar();
-    }
 
    state = {
     char:{},
@@ -19,6 +15,15 @@ class RandomChar extends Component {
    }
    
  marvelService= new MarvelService();
+
+ componentDidMount (){
+    this.updateChar();
+    // this.timerId = setInterval(this.updateChar, 15000);
+ }
+
+ componentWillUnmount() {
+    clearInterval(this.timerId);
+}
 
  onCharLoaded = (char) => {
      this.setState({
@@ -72,6 +77,10 @@ class RandomChar extends Component {
 
 const View =({char})=>{
     const {name, thambnail, description,homepage,wiki}= char;
+    let imgStyle = {'objectFit' : 'cover'};
+    if (thambnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg') {
+        imgStyle = {'objectFit' : 'contain'};
+    }
 
     return (
                     <div className="randomchar__block">
@@ -91,5 +100,6 @@ const View =({char})=>{
                     </div>
     )
 }
+
 
 export default RandomChar;
