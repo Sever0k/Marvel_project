@@ -91,7 +91,7 @@ const View =({char})=>{
 
     return (
                     <div className="randomchar__block">
-                        <img src={thambnail} alt="Random character" className="randomchar__img"/>
+                        <img src={thambnail} alt="Random character" className="randomchar__img" style={imgStyle}  />
                         <div className="randomchar__info">
                             <p className="randomchar__name">{name}</p>
                             <p className="randomchar__descr">{description} </p>

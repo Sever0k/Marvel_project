@@ -27,6 +27,7 @@ state = {
     }
  }
 
+
  updateChar = () => {
     const {charId} = this.props;
     if (!charId) {
