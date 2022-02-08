@@ -1,4 +1,4 @@
-import {Component} from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import MarvelService from '../../services/MarvelService';
@@ -9,70 +9,72 @@ import Skeleton from '../skeleton/Skeleton';
 import './charInfo.scss';
 
 class CharInfo extends Component {
-    
-state = {
+
+    state = {
         char: null,
         loading: false,
         error: false
     }
-       
- marvelService= new MarvelService();
 
- componentDidMount(){
-     this.updateChar();
- }
+    marvelService = new MarvelService();
 
- componentDidUpdate(prevProps, prevState){
-    if (this.props.charId !== prevProps.charId) {
+    componentDidMount() {
         this.updateChar();
     }
- }
 
-
- updateChar = () => {
-    const {charId} = this.props;
-    if (!charId) {
-        return;
+    componentDidUpdate(prevProps, prevState) {
+        if (this.props.charId !== prevProps.charId) {
+            this.updateChar();
+        }
     }
 
-    this.onCharLoading();
 
-    this.marvelService
-        .getCharacter(charId)
-        .then(this.onCharLoaded)
-        .catch(this.onError);
-}
+    updateChar = () => {
+        const { charId } = this.props;
+        if (!charId) {
+            return;
+        }
 
-onCharLoading = () => {
-    this.setState({
-        loading: true
-    })
-}
+        this.onCharLoading();
 
- onCharLoaded = (char) => {
-     this.setState({
-         char,
-         loading: false})
+        this.marvelService
+            .getCharacter(charId)
+            .then(this.onCharLoaded)
+            .catch(this.onError);
+    }
+
+    onCharLoading = () => {
+        this.setState({
+            loading: true
+        })
+    }
+
+    onCharLoaded = (char) => {
+        this.setState({
+            char,
+            loading: false
+        })
     }
 
     onError = () => {
         this.setState({
             loading: false,
-            error: true})
+            error: true
+        })
     }
 
-    render(){
-        const {char, loading, error} = this.state;
+    render() {
+        const { char, loading, error } = this.state;
 
-        const skeleton = char || loading || error ? null : <Skeleton/>;
+        const skeleton = char || loading || error ? null : <Skeleton />;
 
         const errorMessage = error ? <ErrorMessage /> : null;
-        const spinner = loading ? <Spinner/> : null;
-        const content = !(loading || error || !char) ? <View char={char}/> : null;
-      
+        const spinner = loading ? <Spinner /> : null;
+        const content = !(loading || error || !char) ? <View char={char} /> : null;
+
         return (
-           
-           <div className="char__info">
+
+            <div className="char__info">
                 {skeleton}
                 {errorMessage}
                 {spinner}
@@ -82,50 +84,50 @@ onCharLoading = () => {
     }
 }
 
-const View = ({char}) =>{
-    const {name, description, thambnail, homepage, wiki, comics} = char;
+const View = ({ char }) => {
+    const { name, description, thambnail, homepage, wiki, comics } = char;
 
-    let imgStyle = {'objectFit' : 'cover'};
+    let imgStyle = { 'objectFit': 'cover' };
     if (thambnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg') {
-        imgStyle = {'objectFit' : 'contain'};
+        imgStyle = { 'objectFit': 'contain' };
     }
-    
-    return(
-<>
-<div className="char__basics">
-                    <img src= {thambnail} alt={name} style={imgStyle}/>
-                    <div>
-                        <div className="char__info-name">{name}</div>
-                        <div className="char__btns">
-                            <a href={homepage} className="button button__main">
-                                <div className="inner">homepage</div>
-                            </a>
-                            <a href={wiki} className="button button__secondary">
-                                <div className="inner">Wiki</div>
-                            </a>
-                        </div>
+
+    return (
+        <>
+            <div className="char__basics">
+                <img src={thambnail} alt={name} style={imgStyle} />
+                <div>
+                    <div className="char__info-name">{name}</div>
+                    <div className="char__btns">
+                        <a href={homepage} className="button button__main">
+                            <div className="inner">homepage</div>
+                        </a>
+                        <a href={wiki} className="button button__secondary">
+                            <div className="inner">Wiki</div>
+                        </a>
                     </div>
                 </div>
-                <div className="char__descr">
-                    {description}
-               </div>
-                <div className="char__comics">Comics:</div>
-                <ul className="char__comics-list">
-                    {comics.length > 0 ? null : 'Мы не нашли комиксов с этим героем'}
-                    {
-                        comics.map((item, i) => {
-                           // eslint-disable-next-line
-                            if(i>9) return;
-                                                        
-                            return(
-                                <li key={i} className="char__comics-item">
+            </div>
+            <div className="char__descr">
+                {description}
+            </div>
+            <div className="char__comics">Comics:</div>
+            <ul className="char__comics-list">
+                {comics.length > 0 ? null : 'Мы не нашли комиксов с этим героем'}
+                {
+                    comics.map((item, i) => {
+                        // eslint-disable-next-line
+                        if (i > 9) return;
+
+                        return (
+                            <li key={i} className="char__comics-item">
                                 {item.name}
                             </li>
-                            )
-                        })
-                    }
-                </ul>
-    </>
+                        )
+                    })
+                }
+            </ul>
+        </>
     )
 }
 
